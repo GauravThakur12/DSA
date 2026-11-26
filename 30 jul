@@ -839,4 +839,117 @@ class Solution {
 
 
 
+22.
+class Solution {
+
+    int[] parent;
+
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+
+    public int[] findRedundantConnection(int[][] edges) {
+
+        int n = edges.length;
+        parent = new int[n + 1];
+
+        for (int i = 1; i <= n; i++) {
+            parent[i] = i;
+        }
+
+        for (int[] edge : edges) {
+
+            int u = edge[0];
+            int v = edge[1];
+
+            int pu = find(u);
+            int pv = find(v);
+
+            if (pu == pv) {
+                return edge;
+            }
+
+            parent[pu] = pv;
+        }
+
+        return new int[0];
+    }
+}
+23.
+class Solution {
+
+    int[] parent;
+
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+
+    public int[] findRedundantDirectedConnection(int[][] edges) {
+
+        int n = edges.length;
+
+        int[] parentNode = new int[n + 1];
+
+        int[] edge1 = null;
+        int[] edge2 = null;
+
+        
+        for (int[] edge : edges) {
+
+            int u = edge[0];
+            int v = edge[1];
+
+            if (parentNode[v] == 0) {
+                parentNode[v] = u;
+            } else {
+                edge1 = new int[]{parentNode[v], v};
+                edge2 = edge;
+                break;
+            }
+        }
+
+        
+        parent = new int[n + 1];
+
+        for (int i = 1; i <= n; i++) {
+            parent[i] = i;
+        }
+
+        for (int[] edge : edges) {
+
+            if (edge2 != null &&
+                edge[0] == edge2[0] &&
+                edge[1] == edge2[1]) {
+                continue;
+            }
+
+            int u = edge[0];
+            int v = edge[1];
+
+            int pu = find(u);
+            int pv = find(v);
+
+            if (pu == pv) {
+                if (edge1 == null) {
+                    return edge;
+                }
+                return edge1;
+            }
+
+            parent[pu] = pv;
+        }
+
+       
+        return edge2;
+    }
+}
+
+
+
 
